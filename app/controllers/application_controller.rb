@@ -8,4 +8,13 @@ class ApplicationController < ActionController::Base
   include CurrentUser
 
   before_action :require_current_user
+
+  rescue_from ActiveRecord::RecordNotFound, with: :handle_record_not_found
+
+  private
+
+  def handle_record_not_found
+    redirect_to documents_path,
+                alert: "The document you're trying to access doesn't exist or you no longer have permission to view it."
+  end
 end

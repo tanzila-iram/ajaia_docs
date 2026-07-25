@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_25_042603) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_25_054418) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -57,6 +57,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_25_042603) do
     t.bigint "document_id", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
+    t.index ["document_id", "user_id"], name: "index_document_shares_on_document_id_and_user_id", unique: true
     t.index ["document_id"], name: "index_document_shares_on_document_id"
     t.index ["user_id"], name: "index_document_shares_on_user_id"
   end
