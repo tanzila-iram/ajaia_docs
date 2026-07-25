@@ -1,0 +1,39 @@
+<%= form_with model: document, class: "space-y-6" do |form| %>
+  <% if document.errors.any? %>
+    <div class="rounded-lg border border-red-200 bg-red-50 p-4 text-red-700">
+      <h2 class="font-semibold">
+        <%= pluralize(document.errors.count, "error") %> prevented this document from being saved:
+      </h2>
+
+      <ul class="mt-2 list-disc pl-5">
+        <% document.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :title, class: "mb-2 block text-sm font-medium text-gray-700" %>
+
+    <%= form.text_field :title,
+          autofocus: true,
+          placeholder: "Untitled document",
+          class: "w-full rounded-lg border border-gray-300 px-4 py-3 text-lg focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200" %>
+  </div>
+
+  <div>
+    <%= form.label :content, class: "mb-2 block text-sm font-medium text-gray-700" %>
+
+    <%= form.rich_textarea :content,
+          class: "min-h-96 rounded-lg border border-gray-300 bg-white" %>
+  </div>
+
+  <div class="flex items-center gap-3">
+    <%= form.submit class: "cursor-pointer rounded-lg bg-blue-600 px-5 py-2.5 font-medium text-white hover:bg-blue-700" %>
+
+    <%= link_to "Cancel",
+          documents_path,
+          class: "rounded-lg border border-gray-300 px-5 py-2.5 font-medium text-gray-700 hover:bg-gray-50" %>
+  </div>
+<% end %>
