@@ -13,7 +13,9 @@ Rails.application.routes.draw do
   # root "posts#index"
   root "documents#index"
 
-  resources :documents
-
   resource :session, only: :update
+
+  resources :documents do
+    resources :document_shares, only: %i[create destroy]
+  end
 end

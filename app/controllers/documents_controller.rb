@@ -1,22 +1,26 @@
 class DocumentsController < ApplicationController
-  before_action :set_document, only: %i[show edit update destroy]
+  before_action :set_document, only: %i[show edit update]
+  before_action :set_owned_document, only: :destroy
 
   def index
-    @documents = current_user
-               .owned_documents
-               .order(updated_at: :desc)
+    @documents = accessible_documents.order(updated_at: :desc)
   end
 
   def show
-  end
+		@available_users = User
+			.where.not(id: @document.owner_id)
+			.where.not(id: @document.shared_user_ids)
+			.order(:name)
+	end
 
   def new
     @document = Document.new
   end
 
   def create
-    @document = Document.new(document_params)
+    @document = current_user.owned_documents.new(document_params)
     @document.owner = current_user
+		
 
     if @document.save
       redirect_to @document, notice: "Document was created successfully."
@@ -45,7 +49,17 @@ class DocumentsController < ApplicationController
   private
 
   def set_document
-    @document = current_user.owned_documents.find(params[:id])
+		@document = accessible_documents.find(params[:id])
+	end
+
+	def set_owned_document
+		@document = current_user.owned_documents.find(params[:id])
+	end
+
+  def accessible_documents
+    Document
+        .where(owner: current_user)
+        .or(Document.where(id: current_user.shared_document_ids))
   end
 
   def document_params
