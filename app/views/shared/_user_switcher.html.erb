@@ -1,0 +1,20 @@
+<div class="mb-8 flex items-center justify-between rounded-lg border border-gray-200 bg-white px-6 py-4 shadow-sm">
+  <div>
+    <p class="text-sm text-gray-500">Current User</p>
+    <p class="font-semibold"><%= current_user.name %></p>
+  </div>
+
+  <%= form_with url: session_path, method: :patch do |form| %>
+    <%= form.collection_select(
+      :user_id,
+      User.order(:name),
+      :id,
+      :name,
+      { selected: current_user.id },
+      {
+        onchange: "this.form.requestSubmit()",
+        class: "rounded-lg border border-gray-300 px-3 py-2"
+      }
+    ) %>
+  <% end %>
+</div>

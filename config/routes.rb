@@ -14,4 +14,6 @@ Rails.application.routes.draw do
   root "documents#index"
 
   resources :documents
+
+  resource :session, only: :update
 end

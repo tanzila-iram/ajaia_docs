@@ -2,7 +2,9 @@ class DocumentsController < ApplicationController
   before_action :set_document, only: %i[show edit update destroy]
 
   def index
-    @documents = Document.order(updated_at: :desc)
+    @documents = current_user
+               .owned_documents
+               .order(updated_at: :desc)
   end
 
   def show
@@ -14,7 +16,7 @@ class DocumentsController < ApplicationController
 
   def create
     @document = Document.new(document_params)
-    @document.owner = User.first
+    @document.owner = current_user
 
     if @document.save
       redirect_to @document, notice: "Document was created successfully."
@@ -43,7 +45,7 @@ class DocumentsController < ApplicationController
   private
 
   def set_document
-    @document = Document.find(params[:id])
+    @document = current_user.owned_documents.find(params[:id])
   end
 
   def document_params
