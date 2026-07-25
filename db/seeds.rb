@@ -7,3 +7,21 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+User.destroy_all
+
+User.create!(
+  name: "Tanzila",
+  email: "tanzila@example.com"
+)
+
+User.create!(
+  name: "Iram",
+  email: "iram@example.com"
+)
+
+User.create!(
+  name: "Noor",
+  email: "noor@example.com"
+)
+
+puts "Seeded #{User.count} users"
